@@ -358,7 +358,11 @@ func encrypt(s string) []byte {
 func exec(ip string, cmd string) (string, error) {
 	data := encrypt(cmd)
 	port := 9999
-	conn, err := net.Dial("udp4", ip+":"+strconv.Itoa(port))
+
+	//	Timeout after 30 seconds
+	d := net.Dialer{Timeout: 30 * time.Second}
+
+	conn, err := d.Dial("udp4", ip+":"+strconv.Itoa(port))
 	if err != nil {
 		return "", err
 	}
